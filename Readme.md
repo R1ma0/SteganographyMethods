@@ -10,7 +10,9 @@
 
 -e          - шифрование
 -d          - дешифрование
--chunk      - для LSB число младших бит (от 1 до 4)
+-chunk      - размер
+                для LSB числа младших бит (от 1 до 4)
+                для CJB 
 -alg        - используемый стеганографический алгоритм
                 1. LSB (Least Significant Bit)
                 2. CJB (The Cutter-Jordan-Bossen method)

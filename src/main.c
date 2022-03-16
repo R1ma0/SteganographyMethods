@@ -2,10 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-    // argv[1] - path to source BMP file
-    // argv[2] - path to output BMP file
-    // argv[3] - path to text to encryption
-
     BITMAPDATA bitmapData;
     TEXTDATA edData;
 
@@ -28,13 +24,14 @@ int main(int argc, char *argv[])
     // BMP encryption
 
     encrypt_using_LSB(&bitmapData, &edData);
-    // bmp_write(argv[2], &bitmapData);
-    // write_data_for_text_encryption_to_file(edData.textLength, edData.bitPerByte, decryptionDataFilename);
+    bmp_write(argv[2], &bitmapData);
+    write_data_for_text_encryption_to_file(edData.textLength, edData.bitPerByte, decryptionDataFilename);
 
     // BMP decryption
 
-    // read_data_to_encrypt_text_from_file(decryptionDataFilename, &edData);
-    // decrypt_using_LSB(&bitmapData, &edData);
+    read_data_to_encrypt_text_from_file(decryptionDataFilename, &edData);
+    decrypt_using_LSB(&bitmapData, &edData);
+    write_decrypted_text_to_file("decryptedText.txt", edData.text, &edData.textLength);
 
     // Memory freeing
 

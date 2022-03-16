@@ -81,27 +81,27 @@ void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionDa
     fclose(fp);
 }
 
-// void write_decrypted_text_to_file(char *pathToFile, BYTE *textToWrite, DWORD *charCount)
-// {
-//     FILE *fp;
+void write_decrypted_text_to_file(char *pathToFile, BYTE *textToWrite, DWORD *charCount)
+{
+    FILE *fp;
 
-//     // Opening
+    // File opening
 
-//     fp = fopen(pathToFile, "w");
-//     if(fp == NULL)
-//     {
-//         perror("File writing error.\n");
-//         exit(EXIT_FAILURE);
-//     }
+    fp = fopen(pathToFile, "w");
+    if(fp == NULL)
+    {
+        perror("File writing error. ");
+        exit(EXIT_FAILURE);
+    }
 
-//     // Writing
+    // File writing
     
-//     for(DWORD v = 0; v < *charCount; v++)
-//     {
-//         fputc(textToWrite[v], fp);
-//     }
+    for(DWORD v = 0; v < *charCount; v++)
+    {
+        fputc(textToWrite[v], fp);
+    }
 
-//     // Closing
+    // Closing a file
 
-//     fclose(fp);
-// }
+    fclose(fp);
+}

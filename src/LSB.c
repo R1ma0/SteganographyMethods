@@ -54,65 +54,76 @@ void encrypt_using_LSB(BITMAPDATA *data, TEXTDATA *encData)
     free(bitSeq);
 }
 
-void decrypt_using_LSB(BITMAPDATA *data, TEXTDATA *decryptionData)
+void decrypt_using_LSB(BITMAPDATA *data, TEXTDATA *encData)
 {
-    // BMPPIXELINFO *currPixel;
-    // DWORD bitSeqLength = decryptionData->textLength * 8;
-    // DWORD bitSeqId = 0;
-    // BYTE *bitSeq = (BYTE *) malloc (bitSeqLength * sizeof(BYTE));
+    DWORD bitSeqLength = encData->textLength * 8;
+    BYTE *bitSeq = (BYTE *) malloc (bitSeqLength * sizeof(BYTE));
+    encData->text = (BYTE *) malloc (encData->textLength * sizeof(BYTE));
 
-    // // Decryption
+    // Filling an array with zeros
 
-    // for(DWORD pixelId = 0; pixelId < decryptionData->textLength; pixelId++)
-    // {
-    //     currPixel = data->bmPixelInfo[pixelId];
+    for(DWORD i = 0; i < encData->textLength; i++)
+    {
+        encData->text[i] = 0;
+    }
 
-    //     for(WORD decBitId = 0; decBitId < decryptionData->bitPerByte; decBitId++)
-    //     {
-    //         bitSeq[bitSeqId++] = read_bit(currPixel->rgbBlue, 7 - decBitId);
-    //     }
+    // Decryption
 
-    //     for(WORD decBitId = 0; decBitId < decryptionData->bitPerByte; decBitId++)
-    //     {
-    //         bitSeq[bitSeqId++] = read_bit(currPixel->rgbGreen, 7 - decBitId);
-    //     }
+    int bitToReadIndex = 1;
+    WORD pixelToReadIndex = 0;
 
-    //     for(WORD decBitId = 0; decBitId < decryptionData->bitPerByte; decBitId++)
-    //     {
-    //         bitSeq[bitSeqId++] = read_bit(currPixel->rgbRed, 7 - decBitId);
-    //     }
-    // }
+    for(DWORD index = 0; index < bitSeqLength; index++)
+    {
+        bitSeq[index] = read_bit(&data->bmPixelData[pixelToReadIndex], bitToReadIndex);
+        bitToReadIndex--;
+
+        if(bitToReadIndex == -1)
+        {
+            bitToReadIndex = 1;
+            pixelToReadIndex++;
+        }
+    }
 
     // BIT sequence to CHAR sequence
+    
+    DWORD charIndex = 0;
+    short position = 7;
 
-    // for(int i = 0; i < 7; i++)
-    // {
-    //     printf("%c", bitSeq[i]);
-    // }
+    for(DWORD index = 0; index < bitSeqLength; index++)
+    {
+        write_bit(&encData->text[charIndex], bitSeq[index], position);
+        position--;
+
+        if(position == -1)
+        {
+            position = 7;
+            charIndex++;
+        }
+    }
 
     // Memory freeing
 
-    // free(bitSeq);
+    free(bitSeq);
 }
 
-void write_bit(BYTE *color, BYTE bit, WORD position)
+void write_bit(BYTE *element, BYTE bit, WORD position)
 {
     if (bit == 1)
     {
-        *color |= (1 << position);
+        *element |= (1 << position);
     }
     else
     {
-        *color &= ~(1 << position);
+        *element &= ~(1 << position);
     }
 }
 
-BYTE read_bit(BYTE color, WORD position)
+BYTE read_bit(BYTE *element, WORD position)
 {
-    if(color & (1 << position))
+    if(*element & (1 << position))
     {
-        return '1';
+        return 1;
     }
 
-    return '0';
+    return 0;
 }
