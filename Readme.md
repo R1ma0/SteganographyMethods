@@ -4,20 +4,19 @@
 
 ЗАПУСК (В ТЕРМИНАЛЕ)
 Шифрование 
-    IOSM.exe -e -alg -chunk -ptrf -ptsf -ptet
+    LSB: IOSM.exe -e -LSB chunk ptrf ptsf ptet ptdd
+        Пример: IOSM.exe -e -LSB 2 img/file.bmp img/enc_LSB.bmp forEncryption.txt dataForDecryption.txt
 Дешифрование
-    IOSM.exe -d -alg -chunk -ptrf -ptdt -ptdd
+    LSB: IOSM.exe -d -LSB ptrf ptdd ptdt
+        Пример: IOSM.exe -d -LSB img/enc_LSB.bmp dataForDecryption.txt decryptedText.txt
 
 -e          - шифрование
 -d          - дешифрование
--chunk      - размер
+chunk      - размер
                 для LSB числа младших бит (от 1 до 4)
                 для CJB 
--alg        - используемый стеганографический алгоритм
-                1. LSB (Least Significant Bit)
-                2. CJB (The Cutter-Jordan-Bossen method)
--ptrf       - путь к исходному изображению в формате .bmp
--ptsf       - путь для сохранения изображения в формате .bmp
--ptet       - путь к шифруемому тексту
--ptdt       - путь для сохранения дешифрованного текста
--ptdd       - путь к данным для дешифрования (число младших бит и длина зашифрованного текста)
+ptrf       - путь к исходному изображению в формате .bmp
+ptsf       - путь для сохранения изображения в формате .bmp
+ptet       - путь к шифруемому тексту
+ptdt       - путь для сохранения дешифрованного текста
+ptdd       - путь к данным для дешифрования (число младших бит и длина зашифрованного текста)
