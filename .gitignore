@@ -1,0 +1,7 @@
+# Folders
+obj/
+.vscode/
+
+# File formats
+*.txt
+*.exe
