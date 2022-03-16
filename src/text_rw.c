@@ -1,24 +1,24 @@
 #include "text_rw.h"
 
-void write_data_for_text_encryption_to_file(unsigned long textLength, unsigned int lowerBitsNum, char *decryptionDataFilename)
+void write_data_for_text_encryption_to_file(DWORD textLength, UINT lowerBitsNum, char *decryptionDataFilename)
 {
     FILE *fp;
 
-    // Opening
+    // File opening
 
     fp = fopen(decryptionDataFilename, "w");
     if(fp == NULL)
     {
-        perror("File writing error.\n");
+        perror("File writing error. ");
         exit(EXIT_FAILURE);
     }
 
-    // Writing
+    // File writing
 
     fprintf(fp, "%d\n", lowerBitsNum);
     fprintf(fp, "%d", textLength);
 
-    // Closing
+    // Closing a file
 
     fclose(fp);
 }
@@ -27,21 +27,21 @@ void read_data_to_encrypt_text_from_file(char *decryptionDataFilename, TEXTDATA 
 {
     FILE *fp;
 
-    // Opening
+    // File opening
 
     fp = fopen(decryptionDataFilename, "r");
     if(fp == NULL)
     {
-        perror("Decryption data reading error.\n");
+        perror("Decryption data reading error. ");
         exit(EXIT_FAILURE);
     }
 
-    // Reading
+    // File reading
 
     fscanf(fp, "%d", &decryptionData->bitPerByte);
     fscanf(fp, "%d", &decryptionData->textLength);
 
-    // Closing
+    // Closing a file
 
     fclose(fp);
 }
@@ -50,12 +50,12 @@ void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionDa
 {
     FILE *fp;
     
-    // Opening
+    // File opening
 
     fp = fopen(pathToFile, "r");
     if(fp == NULL)
     {
-        perror("File reading error.\n");
+        perror("File reading error. ");
         exit(EXIT_FAILURE);
     }
 
@@ -67,21 +67,21 @@ void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionDa
 
     // Memory allocation
 
-    encryptionData->text = (unsigned char *) malloc (encryptionData->textLength * sizeof(unsigned char));
+    encryptionData->text = (BYTE *) malloc (encryptionData->textLength * sizeof(BYTE));
 
-    // Reading
+    // File reading
 
-    for(unsigned long t = 0; t < encryptionData->textLength; t++)
+    for(DWORD t = 0; t < encryptionData->textLength; t++)
     {
         encryptionData->text[t] = fgetc(fp);
     }
 
-    // Closing
+    // Closing a file
 
     fclose(fp);
 }
 
-// void write_decrypted_text_to_file(char *pathToFile, unsigned char *textToWrite, unsigned long *charCount)
+// void write_decrypted_text_to_file(char *pathToFile, BYTE *textToWrite, DWORD *charCount)
 // {
 //     FILE *fp;
 
@@ -96,7 +96,7 @@ void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionDa
 
 //     // Writing
     
-//     for(unsigned long v = 0; v < *charCount; v++)
+//     for(DWORD v = 0; v < *charCount; v++)
 //     {
 //         fputc(textToWrite[v], fp);
 //     }

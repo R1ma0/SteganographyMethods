@@ -1,13 +1,13 @@
 #ifndef ENC_DEC_DATA_H
 #define ENC_DEC_DATA_H
 
-// Encryption Decryption DATA
+#include <Windows.h>
 
 typedef struct tagTEXTDATA
 {
-    unsigned long textLength;
-    unsigned int bitPerByte;
-    unsigned char *text;
+    DWORD textLength;
+    UINT bitPerByte;
+    BYTE *text;
 } TEXTDATA;
 
 #endif

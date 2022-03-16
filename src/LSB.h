@@ -8,7 +8,7 @@
 
 void encrypt_using_LSB(BITMAPDATA *data, TEXTDATA *encryptedText);
 void decrypt_using_LSB(BITMAPDATA *data, TEXTDATA *decryptionData);
-BYTE write_bit(BYTE pixelColor, unsigned char bit, unsigned short position);
-unsigned char read_bit(BYTE pixelColor, unsigned short position);
+void write_bit(BYTE *pixelColor, BYTE bit, WORD position);
+BYTE read_bit(BYTE pixelColor, WORD position);
 
 #endif

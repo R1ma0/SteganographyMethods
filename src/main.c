@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
     // BMP reading
 
     bmp_read(argv[1], &bitmapData);
-    // read_text(argv[3], &edData);
+    read_text_for_encryption_from_file(argv[3], &edData);
 
     // BMP encryption
 
-    // encrypt_using_LSB(&bitmapData, &edData);
-    bmp_write(argv[2], &bitmapData);
+    encrypt_using_LSB(&bitmapData, &edData);
+    // bmp_write(argv[2], &bitmapData);
     // write_data_for_text_encryption_to_file(edData.textLength, edData.bitPerByte, decryptionDataFilename);
 
     // BMP decryption
