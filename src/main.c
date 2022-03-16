@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    BMPDATA bitmapData;
+    BITMAPDATA bitmapData;
     // EDDATA edData;
 
     // char *pathToFile = argv[3];
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     // Memory freeing
 
     // free(edData.text);
-    free(bitmapData.bmPixelInfo);
+    free(bitmapData.bmPixelData);
     
     return 0;
 }

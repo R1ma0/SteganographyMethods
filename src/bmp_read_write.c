@@ -1,76 +1,75 @@
 #include "bmp_read_write.h"
 
-void bmp_read(char *pathToFile, BMPDATA *bitmapData)
+void bmp_read(char *pathToFile, BITMAPDATA *data)
 {
     FILE *fp;
-    LONG colorGridHeight;
-    LONG colorGridWidth;
+
+    // File reading 
 
     fp = fopen(pathToFile, "rb");
     if(fp == NULL)
     {
-        perror("File reading error.\n");
+        perror("Error reading file. ");
         exit(EXIT_FAILURE);
     }
 
-    fread(&bitmapData->type, sizeof(WORD), 1, fp);
-    if(bitmapData->type != 0x4d42) // BM
+    // Checking file format
+
+    fread(&data->bmHeader.bfType, sizeof(WORD), 1, fp);
+    if(data->bmHeader.bfType != 0x4d42) // BM
     {
         perror("The specified file is not a bitmap format.\n");
         exit(EXIT_FAILURE);
     }
 
+    fseek(fp, 0, SEEK_SET);
+
     // Reading headlines
 
-    fread(&bitmapData->bmHeader, sizeof(BMPFILEHEADER), 1, fp);
-    fread(&bitmapData->bmInfo, sizeof(BMPINFOHEADER), 1, fp);
+    fread(&data->bmHeader, sizeof(BITMAPFILEHEADER), 1, fp);
+    fread(&data->bmInfo, sizeof(BITMAPINFOHEADER), 1, fp);
 
     // Memory allocation
 
-    colorGridHeight = bitmapData->bmInfo.biHeight;
-    colorGridWidth = bitmapData->bmInfo.biWidth;
-
-    bitmapData->bmPixelInfo = (BMPPIXELINFO **) malloc (colorGridHeight * sizeof(BMPPIXELINFO *));
-    for(LONG i = 0; i < colorGridHeight; i++)
-    {
-        bitmapData->bmPixelInfo[i] = (BMPPIXELINFO *) malloc (colorGridWidth * sizeof(BMPPIXELINFO));
-    }
+    data->bmBytePerLine = (data->bmInfo.biWidth * data->bmInfo.biBitCount / 8 + 3) / 4 * 4;
+    data->bmPixelData = (BYTE *) malloc (data->bmInfo.biHeight * data->bmBytePerLine);
 
     // Colors reading
 
-    for(LONG row = 0; row < colorGridHeight; row++)
+    for(LONG index = 0; index < data->bmInfo.biHeight * data->bmBytePerLine; index++)
     {
-        for(LONG col = 0; col < colorGridWidth; col++)
-        {
-            fread(&bitmapData->bmPixelInfo[row][col], sizeof(BMPPIXELINFO), 1, fp);
-        }
+        fread(&data->bmPixelData[index], sizeof(BYTE), 1, fp);
     }
+
+    // Closing a file
 
     fclose(fp);
 }
 
-void bmp_write(char *pathToFile, BMPDATA *data)
+void bmp_write(char *pathToFile, BITMAPDATA *data)
 {
     FILE *fp;
+
+    // File reading
 
     fp = fopen(pathToFile, "wb");
     if(fp == NULL)
     {
-        perror("File writing error.\n");
+        perror("Error writing file.");
         exit(EXIT_FAILURE);
     }
 
-    fwrite(&data->type, sizeof(WORD), 1, fp);
-    fwrite(&data->bmHeader, sizeof(BMPFILEHEADER), 1, fp);
-    fwrite(&data->bmInfo, sizeof(BMPINFOHEADER), 1, fp);
+    // Data writing
 
-    for(LONG row = 0; row < data->bmInfo.biHeight; row++)
+    fwrite(&data->bmHeader, sizeof(BITMAPFILEHEADER), 1, fp);
+    fwrite(&data->bmInfo, sizeof(BITMAPINFOHEADER), 1, fp);
+
+    for(LONG index = 0; index < data->bmInfo.biHeight * data->bmBytePerLine; index++)
     {
-        for(LONG col = 0; col < data->bmInfo.biWidth; col++)
-        {
-            fwrite(&data->bmPixelInfo[row][col], sizeof(BMPPIXELINFO), 1, fp);
-        }
+        fwrite(&data->bmPixelData[index], sizeof(BYTE), 1, fp);
     }
+
+    // Closing a file
 
     fclose(fp);
 }

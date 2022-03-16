@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "bmp.h"
 
-void bmp_read(char *pathToFile, BMPDATA *data);
-void bmp_write(char *pathToFile, BMPDATA *data);
+void bmp_read(char *pathToFile, BITMAPDATA *data);
+void bmp_write(char *pathToFile, BITMAPDATA *data);
 
 #endif
