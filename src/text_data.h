@@ -3,11 +3,11 @@
 
 // Encryption Decryption DATA
 
-typedef struct EDDATA_TYPE
+typedef struct tagTEXTDATA
 {
     unsigned long textLength;
     unsigned int bitPerByte;
     unsigned char *text;
-} EDDATA;
+} TEXTDATA;
 
 #endif

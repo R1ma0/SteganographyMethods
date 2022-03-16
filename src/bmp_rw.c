@@ -1,4 +1,4 @@
-#include "bmp_read_write.h"
+#include "bmp_rw.h"
 
 void bmp_read(char *pathToFile, BITMAPDATA *data)
 {

@@ -2,9 +2,9 @@
 #define MAIN_H
 
 #include "bmp.h"
-#include "bmp_read_write.h"
-// #include "text_read_write.h"
-// #include "LSB.h"
-// #include "enc_dec_data.h"
+#include "bmp_rw.h"
+#include "text_rw.h"
+#include "LSB.h"
+#include "text_data.h"
 
 #endif

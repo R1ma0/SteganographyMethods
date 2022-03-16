@@ -1,6 +1,6 @@
-#include "text_read_write.h"
+#include "text_rw.h"
 
-void write_decryption_data(unsigned long textLength, unsigned int lowerBitsNum, char *decryptionDataFilename)
+void write_data_for_text_encryption_to_file(unsigned long textLength, unsigned int lowerBitsNum, char *decryptionDataFilename)
 {
     FILE *fp;
 
@@ -23,7 +23,7 @@ void write_decryption_data(unsigned long textLength, unsigned int lowerBitsNum, 
     fclose(fp);
 }
 
-void read_decryption_data(char *decryptionDataFilename, EDDATA *decryptionData)
+void read_data_to_encrypt_text_from_file(char *decryptionDataFilename, TEXTDATA *decryptionData)
 {
     FILE *fp;
 
@@ -46,7 +46,7 @@ void read_decryption_data(char *decryptionDataFilename, EDDATA *decryptionData)
     fclose(fp);
 }
 
-void read_text(char *pathToFile, EDDATA *encryptionData)
+void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionData)
 {
     FILE *fp;
     
@@ -81,7 +81,7 @@ void read_text(char *pathToFile, EDDATA *encryptionData)
     fclose(fp);
 }
 
-// void write_text(char *pathToFile, unsigned char *textToWrite, unsigned long *charCount)
+// void write_decrypted_text_to_file(char *pathToFile, unsigned char *textToWrite, unsigned long *charCount)
 // {
 //     FILE *fp;
 
