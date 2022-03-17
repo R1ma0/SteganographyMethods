@@ -7,4 +7,7 @@
 #include "text_data.h"
 #include "bit_rw.h"
 
+void encrypt_using_CJB(BITMAPDATA *data, TEXTDATA *encryptedText);
+void decrypt_using_CJB(BITMAPDATA *data, TEXTDATA *decryptionData);
+
 #endif

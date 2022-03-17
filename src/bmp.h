@@ -5,7 +5,7 @@
 
 typedef struct tagBITMAPDATA
 {
-    unsigned int bmBytePerLine;
+    UINT bmBytePerLine;
     BITMAPFILEHEADER bmHeader;
     BITMAPINFOHEADER bmInfo;
     BYTE *bmPixelData;
