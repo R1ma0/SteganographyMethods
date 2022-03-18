@@ -5,10 +5,10 @@
 ЗАПУСК (В ТЕРМИНАЛЕ)
 Шифрование 
     LSB: IOSM.exe -e -LSB chunk ptrf ptsf ptet ptdd
-        Пример: IOSM.exe -e -LSB 2 img/file.bmp img/enc_LSB.bmp forEncryption.txt dataForDecryption.txt
+        Пример: IOSM.exe -e -LSB 2 tests/file.bmp tests/enc_LSB.bmp tests/forEncryption.txt tests/dataForDecryption.txt
 Дешифрование
     LSB: IOSM.exe -d -LSB ptrf ptdd ptdt
-        Пример: IOSM.exe -d -LSB img/enc_LSB.bmp dataForDecryption.txt decryptedText.txt
+        Пример: IOSM.exe -d -LSB tests/enc_LSB.bmp tests/dataForDecryption.txt tests/decryptedText.txt
 
 -e          - шифрование
 -d          - дешифрование
