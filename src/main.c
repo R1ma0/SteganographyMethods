@@ -1,17 +1,25 @@
 #include "main.h"
 
+#define CJB_MAX_EMBEDDING_AREA_SIZE 4
+#define LSB_MAX_BIT_PER_BYTE 4
+
 int main(int argc, char *argv[])
 {
     BITMAPDATA bitmapData;
     TEXTDATA edData;
+    DWORD chunk;
+
+    //
+    // TO-DO: MAKE IF BEAUTIFUL !!!
+    //
 
     if(strcmp(argv[1], "-e") == 0) // Encryption mode
     {
         if(strcmp(argv[2], "-LSB") == 0) // LSB method
         {
-            DWORD chunk = strtol(argv[3], NULL, 10);
+            chunk = strtol(argv[3], NULL, 10);
 
-            if(chunk < 5 && chunk > 0) // range {1; 4}
+            if(chunk > 0 && chunk <= LSB_MAX_BIT_PER_BYTE)
             {
                 edData.chunk = chunk;
                 bmp_read(argv[4], &bitmapData);
@@ -22,18 +30,39 @@ int main(int argc, char *argv[])
             }
             else
             {
-                perror("Chunk size must be from 1 to 4. ");
+                printf(
+                    "The number of encrypted bits can be in the \
+                    range from 1 to %d. ", LSB_MAX_BIT_PER_BYTE
+                );
                 exit(EXIT_FAILURE);
             }
         }   
         else if(strcmp(argv[2], "-CJB") == 0) // CJB method
         {
-            perror("'-CJB' unavailable. ");
-            exit(EXIT_FAILURE);
+            chunk = strtol(argv[3], NULL, 10);
+
+            if(chunk > 0 && chunk <= CJB_MAX_EMBEDDING_AREA_SIZE)
+            {
+                edData.chunk = chunk;
+                bmp_read(argv[4], &bitmapData);
+                read_text_for_encryption_from_file(argv[6], &edData);
+                encrypt_using_CJB(&bitmapData, &edData);
+                bmp_write(argv[5], &bitmapData);
+                write_data_for_text_encryption_to_file(edData.textLength, edData.chunk, argv[7]);
+            }
+            else
+            {
+                printf(
+                    "The size of the area for which the brightness \
+                    will be predicted can be in the range from 1 to %d. \
+                    ", CJB_MAX_EMBEDDING_AREA_SIZE
+                );
+                exit(EXIT_FAILURE);
+            }
         }
         else
         {
-            perror("Use '-LSB' or '-CJB' flags. ");
+            printf("Use '-LSB' or '-CJB' flags. ");
             exit(EXIT_FAILURE);
         }
     }
@@ -48,17 +77,21 @@ int main(int argc, char *argv[])
         }
         else if(strcmp(argv[2], "-CJB") == 0) // CJB method
         {
-
+            bmp_read(argv[3], &bitmapData);
+            read_data_to_encrypt_text_from_file(argv[4], &edData);
+            decrypt_using_CJB(&bitmapData, &edData);
+            write_decrypted_text_to_file(argv[5], edData.text, &edData.textLength);
         }
         else
         {
+            printf("Use '-LSB' or '-CJB' flags. ");
             exit(EXIT_FAILURE);
         }
     }
     else
     {
-        perror("Use '-e' for encryption or '-d' for decryption flags. ");
-        return 1;
+        printf("Use '-e' for encryption or '-d' for decryption flags. ");
+        exit(EXIT_FAILURE);
     }
 
     // Memory freeing
