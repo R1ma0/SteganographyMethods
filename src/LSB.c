@@ -7,7 +7,7 @@ void encrypt_using_LSB(BITMAPDATA *data, TEXTDATA *encData)
     // Checking enough pixels to encrypt the text
 
     BYTE checkResult = checking_enough_pixels(
-        &data->bmInfo.biHeight, &data->bmBytePerLine, &bitSeqLength, &encData->bitPerByte
+        &data->bmInfo.biHeight, &data->bmBytePerLine, &bitSeqLength, &encData->chunk
     );
 
     if(checkResult)

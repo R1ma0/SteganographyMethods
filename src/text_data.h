@@ -7,11 +7,13 @@
 typedef struct tagTEXTDATA
 {
     DWORD textLength;
-    UINT bitPerByte;
+    // For LSB is encrypted number of bits per byte
+    // For CJB the size fo the area for which the brightness will be predicted
+    UINT chunk; 
     BYTE *text;
 } TEXTDATA;
 
-BYTE checking_enough_pixels(LONG *height, UINT *bytePerLine, DWORD *bitSeqLength, UINT *bitPerByte);
+BYTE checking_enough_pixels(LONG *height, UINT *bytePerLine, DWORD *bitSeqLength, UINT *chunk);
 BYTE *char_to_bit_seq(DWORD *bitSeqLength, TEXTDATA *encData);
 void bit_to_char_seq(TEXTDATA *encData, BYTE *bitSeq, DWORD *bitSeqLength);
 

@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
 
             if(chunk < 5 && chunk > 0) // range {1; 4}
             {
-                edData.bitPerByte = chunk;
+                edData.chunk = chunk;
                 bmp_read(argv[4], &bitmapData);
                 read_text_for_encryption_from_file(argv[6], &edData);
                 encrypt_using_LSB(&bitmapData, &edData);
                 bmp_write(argv[5], &bitmapData);
-                write_data_for_text_encryption_to_file(edData.textLength, edData.bitPerByte, argv[7]);
+                write_data_for_text_encryption_to_file(edData.textLength, edData.chunk, argv[7]);
             }
             else
             {

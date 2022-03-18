@@ -38,7 +38,7 @@ void read_data_to_encrypt_text_from_file(char *decryptionDataFilename, TEXTDATA 
 
     // File reading
 
-    fscanf(fp, "%d", &decryptionData->bitPerByte);
+    fscanf(fp, "%d", &decryptionData->chunk);
     fscanf(fp, "%d", &decryptionData->textLength);
 
     // Closing a file
