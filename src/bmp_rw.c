@@ -9,7 +9,7 @@ void bmp_read(char *pathToFile, BITMAPDATA *data)
     fp = fopen(pathToFile, "rb");
     if(fp == NULL)
     {
-        perror("Error reading file. ");
+        perror("Error in bmp_read function. ");
         exit(EXIT_FAILURE);
     }
 
@@ -55,7 +55,7 @@ void bmp_write(char *pathToFile, BITMAPDATA *data)
     fp = fopen(pathToFile, "wb");
     if(fp == NULL)
     {
-        perror("Error writing file.");
+        perror("Error in bmp_write function.");
         exit(EXIT_FAILURE);
     }
 

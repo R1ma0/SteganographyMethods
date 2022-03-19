@@ -23,17 +23,17 @@ void encrypt_using_LSB(BITMAPDATA *data, TEXTDATA *encData)
     // Encryption
     
     int bitToWriteIndex = 1;
-    WORD pixelToWriteIndex = 0;
+    WORD byteToWriteIndex = 0;
 
     for(DWORD index = 0; index < bitSeqLength; index++)
     {
-        write_bit(&data->bmPixelData[pixelToWriteIndex], bitSeq[index], bitToWriteIndex);
+        write_bit(&data->bmPixelData[byteToWriteIndex], bitSeq[index], bitToWriteIndex);
         bitToWriteIndex--;
 
         if(bitToWriteIndex == -1)
         {
             bitToWriteIndex = 1;
-            pixelToWriteIndex++;
+            byteToWriteIndex++;
         }
     }
 

@@ -9,7 +9,7 @@ void write_data_for_text_encryption_to_file(DWORD textLength, UINT lowerBitsNum,
     fp = fopen(decryptionDataFilename, "w");
     if(fp == NULL)
     {
-        perror("File writing error. ");
+        perror("Error in write_data_for_text_encryption_to_file function. ");
         exit(EXIT_FAILURE);
     }
 
@@ -32,7 +32,7 @@ void read_data_to_encrypt_text_from_file(char *decryptionDataFilename, TEXTDATA 
     fp = fopen(decryptionDataFilename, "r");
     if(fp == NULL)
     {
-        perror("Decryption data reading error. ");
+        perror("Error in read_data_to_encrypt_text_from_file function. ");
         exit(EXIT_FAILURE);
     }
 
@@ -55,7 +55,7 @@ void read_text_for_encryption_from_file(char *pathToFile, TEXTDATA *encryptionDa
     fp = fopen(pathToFile, "r");
     if(fp == NULL)
     {
-        perror("File reading error. ");
+        perror("Error in read_data_to_encrypt_text_from_file function. ");
         exit(EXIT_FAILURE);
     }
 
@@ -90,7 +90,7 @@ void write_decrypted_text_to_file(char *pathToFile, BYTE *textToWrite, DWORD *ch
     fp = fopen(pathToFile, "w");
     if(fp == NULL)
     {
-        perror("File writing error. ");
+        perror("Error in write_decrypted_text_to_file function. ");
         exit(EXIT_FAILURE);
     }
 

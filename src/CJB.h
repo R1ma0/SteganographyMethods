@@ -5,9 +5,9 @@
 #include <Windows.h>
 #include "bmp.h"
 #include "text_data.h"
-#include "bit_rw.h"
 
-void encrypt_using_CJB(BITMAPDATA *data, TEXTDATA *encryptedText);
-void decrypt_using_CJB(BITMAPDATA *data, TEXTDATA *decryptionData);
+BYTE encrypth_blue_color(float ratio, BYTE red, BYTE green, BYTE blue, BYTE encBit);
+void encrypt_using_CJB(BITMAPDATA *imageData, TEXTDATA *textData);
+void decrypt_using_CJB(BITMAPDATA *imageData, TEXTDATA *textData);
 
 #endif

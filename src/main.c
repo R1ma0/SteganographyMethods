@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     BITMAPDATA bitmapData;
     TEXTDATA edData;
     DWORD chunk;
+    bitmapData.energy = 0.5;
 
     //
     // TO-DO: MAKE IF BEAUTIFUL !!!
