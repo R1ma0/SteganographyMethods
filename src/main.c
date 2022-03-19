@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define CJB_MAX_EMBEDDING_AREA_SIZE 4
+#define KJB_MAX_EMBEDDING_AREA_SIZE 4
 #define LSB_MAX_BIT_PER_BYTE 4
 
 int main(int argc, char *argv[])
@@ -38,16 +38,16 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
             }
         }   
-        else if(strcmp(argv[2], "-CJB") == 0) // CJB method
+        else if(strcmp(argv[2], "-KJB") == 0) // KJB method
         {
             chunk = strtol(argv[3], NULL, 10);
 
-            if(chunk > 0 && chunk <= CJB_MAX_EMBEDDING_AREA_SIZE)
+            if(chunk > 0 && chunk <= KJB_MAX_EMBEDDING_AREA_SIZE)
             {
                 edData.chunk = chunk;
                 bmp_read(argv[4], &bitmapData);
                 read_text_for_encryption_from_file(argv[6], &edData);
-                encrypt_using_CJB(&bitmapData, &edData);
+                encrypt_using_KJB(&bitmapData, &edData);
                 bmp_write(argv[5], &bitmapData);
                 write_data_for_text_encryption_to_file(edData.textLength, edData.chunk, argv[7]);
             }
@@ -56,14 +56,14 @@ int main(int argc, char *argv[])
                 printf(
                     "The size of the area for which the brightness \
                     will be predicted can be in the range from 1 to %d. \
-                    ", CJB_MAX_EMBEDDING_AREA_SIZE
+                    ", KJB_MAX_EMBEDDING_AREA_SIZE
                 );
                 exit(EXIT_FAILURE);
             }
         }
         else
         {
-            printf("Use '-LSB' or '-CJB' flags. ");
+            printf("Use '-LSB' or '-KJB' flags. ");
             exit(EXIT_FAILURE);
         }
     }
@@ -76,16 +76,16 @@ int main(int argc, char *argv[])
             decrypt_using_LSB(&bitmapData, &edData);
             write_decrypted_text_to_file(argv[5], edData.text, &edData.textLength);
         }
-        else if(strcmp(argv[2], "-CJB") == 0) // CJB method
+        else if(strcmp(argv[2], "-KJB") == 0) // KJB method
         {
             bmp_read(argv[3], &bitmapData);
             read_data_to_encrypt_text_from_file(argv[4], &edData);
-            decrypt_using_CJB(&bitmapData, &edData);
+            decrypt_using_KJB(&bitmapData, &edData);
             write_decrypted_text_to_file(argv[5], edData.text, &edData.textLength);
         }
         else
         {
-            printf("Use '-LSB' or '-CJB' flags. ");
+            printf("Use '-LSB' or '-KJB' flags. ");
             exit(EXIT_FAILURE);
         }
     }

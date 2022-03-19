@@ -1,4 +1,4 @@
-#include "CJB.h"
+#include "KJB.h"
 
 // energy - the energy of the embedded data bit
 BYTE encrypth_blue_color(float energy, BYTE red, BYTE green, BYTE blue, BYTE encBit)
@@ -13,7 +13,7 @@ BYTE encrypth_blue_color(float energy, BYTE red, BYTE green, BYTE blue, BYTE enc
     return blue - (energy * brightness);
 }
 
-void encrypt_using_CJB(BITMAPDATA *imageData, TEXTDATA *textData)
+void encrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 {
     DWORD bitSeqLength = textData->textLength * 8;
 
@@ -95,7 +95,7 @@ void encrypt_using_CJB(BITMAPDATA *imageData, TEXTDATA *textData)
     free(pixels);
 }
 
-void decrypt_using_CJB(BITMAPDATA *imageData, TEXTDATA *textData)
+void decrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 {
     DWORD bitSeqLength = textData->textLength * 8;
     BYTE *bitSeq = (BYTE *) malloc (bitSeqLength * sizeof(BYTE));
