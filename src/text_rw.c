@@ -105,3 +105,47 @@ void write_decrypted_text_to_file(char *pathToFile, BYTE *textToWrite, DWORD *ch
 
     fclose(fp);
 }
+
+void read_key_KJB(char *pathToFile, DWORD *key)
+{
+    FILE *fp;
+
+    // File opening
+
+    fp = fopen(pathToFile, "r");
+    if(fp == NULL)
+    {
+        perror("Error in read_key_KJB function. ");
+        exit(EXIT_FAILURE);
+    }
+
+    // File reading
+
+    fscanf(fp, "%u", &(*key));
+
+    // Closing a file
+
+    fclose(fp);
+}
+
+void write_key_KJB(char *pathToFile, DWORD *key)
+{
+    FILE *fp;
+
+    // File opening
+
+    fp = fopen(pathToFile, "w");
+    if(fp == NULL)
+    {
+        perror("Error in write_key_KJB function. ");
+        exit(EXIT_FAILURE);
+    }
+
+    // File reading
+
+    fprintf(fp, "%u", *key);
+
+    // Closing a file
+
+    fclose(fp);
+}

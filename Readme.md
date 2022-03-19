@@ -5,10 +5,14 @@
 ЗАПУСК (В ТЕРМИНАЛЕ)
 Шифрование 
     LSB: IOSM.exe -e -LSB chunk ptrf ptsf ptet ptdd
-        Пример: IOSM.exe -e -LSB 2 tests/file.bmp tests/enc_LSB.bmp tests/forEncryption.txt tests/dataForDecryption.txt
+        Пример: IOSM.exe -e -LSB 2 tests/image.bmp tests/enc_image.bmp tests/forEncryption.txt tests/dataForDecryption.txt
+    KJB: IOSM.exe -e -LSB ptk ptrf ptsf ptet ptdd
+        Пример: IOSM.exe -e -KJB tests/key.txt tests/image.bmp tests/enc_image.bmp tests/forEncryption.txt tests/dataForDecryption.txt
 Дешифрование
     LSB: IOSM.exe -d -LSB ptrf ptdd ptdt
-        Пример: IOSM.exe -d -LSB tests/enc_LSB.bmp tests/dataForDecryption.txt tests/decryptedText.txt
+        Пример: IOSM.exe -d -LSB tests/enc_image.bmp tests/dataForDecryption.txt tests/decryptedText.txt
+    KJB: IOSM.exe -d -KJB ptrf ptdd ptdt ptk
+        Пример: IOSM.exe -d -KJB tests/enc_image.bmp tests/dataForDecryption.txt tests/decryptedText.txt tests/key.txt
 
 -e          - шифрование
 -d          - дешифрование
@@ -20,3 +24,4 @@ ptsf       - путь для сохранения изображения в фо
 ptet       - путь к шифруемому тексту
 ptdt       - путь для сохранения дешифрованного текста
 ptdd       - путь к данным для дешифрования (число младших бит и длина зашифрованного текста)
+ptk        - путь к файлу с ключом

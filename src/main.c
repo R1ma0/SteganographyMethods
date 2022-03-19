@@ -6,9 +6,10 @@
 int main(int argc, char *argv[])
 {
     BITMAPDATA bitmapData;
-    TEXTDATA edData;
+    TEXTDATA textData;
     DWORD chunk;
-    bitmapData.energy = 0.5;
+    textData.chunk = 2; // Default
+    textData.energy = 0.5; // Default
 
     //
     // TO-DO: MAKE IF BEAUTIFUL !!!
@@ -22,12 +23,12 @@ int main(int argc, char *argv[])
 
             if(chunk > 0 && chunk <= LSB_MAX_BIT_PER_BYTE)
             {
-                edData.chunk = chunk;
+                textData.chunk = chunk;
                 bmp_read(argv[4], &bitmapData);
-                read_text_for_encryption_from_file(argv[6], &edData);
-                encrypt_using_LSB(&bitmapData, &edData);
+                read_text_for_encryption_from_file(argv[6], &textData);
+                encrypt_using_LSB(&bitmapData, &textData);
                 bmp_write(argv[5], &bitmapData);
-                write_data_for_text_encryption_to_file(edData.textLength, edData.chunk, argv[7]);
+                write_data_for_text_encryption_to_file(textData.textLength, textData.chunk, argv[7]);
             }
             else
             {
@@ -40,26 +41,12 @@ int main(int argc, char *argv[])
         }   
         else if(strcmp(argv[2], "-KJB") == 0) // KJB method
         {
-            chunk = strtol(argv[3], NULL, 10);
-
-            if(chunk > 0 && chunk <= KJB_MAX_EMBEDDING_AREA_SIZE)
-            {
-                edData.chunk = chunk;
-                bmp_read(argv[4], &bitmapData);
-                read_text_for_encryption_from_file(argv[6], &edData);
-                encrypt_using_KJB(&bitmapData, &edData);
-                bmp_write(argv[5], &bitmapData);
-                write_data_for_text_encryption_to_file(edData.textLength, edData.chunk, argv[7]);
-            }
-            else
-            {
-                printf(
-                    "The size of the area for which the brightness \
-                    will be predicted can be in the range from 1 to %d. \
-                    ", KJB_MAX_EMBEDDING_AREA_SIZE
-                );
-                exit(EXIT_FAILURE);
-            }
+            bmp_read(argv[4], &bitmapData);
+            read_text_for_encryption_from_file(argv[6], &textData);
+            encrypt_using_KJB(&bitmapData, &textData);
+            bmp_write(argv[5], &bitmapData);
+            write_data_for_text_encryption_to_file(textData.textLength, textData.chunk, argv[7]);
+            write_key_KJB(argv[3], &textData.key);
         }
         else
         {
@@ -72,16 +59,17 @@ int main(int argc, char *argv[])
         if(strcmp(argv[2], "-LSB") == 0)
         {
             bmp_read(argv[3], &bitmapData);
-            read_data_to_encrypt_text_from_file(argv[4], &edData);
-            decrypt_using_LSB(&bitmapData, &edData);
-            write_decrypted_text_to_file(argv[5], edData.text, &edData.textLength);
+            read_data_to_encrypt_text_from_file(argv[4], &textData);
+            decrypt_using_LSB(&bitmapData, &textData);
+            write_decrypted_text_to_file(argv[5], textData.text, &textData.textLength);
         }
         else if(strcmp(argv[2], "-KJB") == 0) // KJB method
         {
             bmp_read(argv[3], &bitmapData);
-            read_data_to_encrypt_text_from_file(argv[4], &edData);
-            decrypt_using_KJB(&bitmapData, &edData);
-            write_decrypted_text_to_file(argv[5], edData.text, &edData.textLength);
+            read_data_to_encrypt_text_from_file(argv[4], &textData);
+            read_key_KJB(argv[6], &textData.key);
+            decrypt_using_KJB(&bitmapData, &textData);
+            write_decrypted_text_to_file(argv[5], textData.text, &textData.textLength);
         }
         else
         {
@@ -97,7 +85,7 @@ int main(int argc, char *argv[])
 
     // Memory freeing
 
-    free(edData.text);
+    free(textData.text);
     free(bitmapData.bmPixelData);
     
     return 0;

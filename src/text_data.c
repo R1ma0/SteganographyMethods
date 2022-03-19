@@ -1,7 +1,7 @@
 #include "text_data.h"
 
 // Checking enough pixels to encrypt the text
-BYTE checking_enough_pixels(LONG *height, UINT *bytePerLine, DWORD *bitSeqLength, UINT *chunk)
+BYTE checking_enough_pixels(LONG *height, DWORD *bytePerLine, DWORD *bitSeqLength, UINT *chunk)
 {
     DWORD bytePerImage = (*height) * (*bytePerLine);
     DWORD needBytesPerImage = (*bitSeqLength) / (*chunk);

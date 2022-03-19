@@ -1,7 +1,7 @@
 #include "KJB.h"
 
 // energy - the energy of the embedded data bit
-BYTE encrypth_blue_color(float energy, BYTE red, BYTE green, BYTE blue, BYTE encBit)
+BYTE encrypth_blue_color(double energy, BYTE red, BYTE green, BYTE blue, BYTE encBit)
 {
     UINT brightness = (red * 0.298) + (green * 0.586) + (blue * 0.114);
 
@@ -15,6 +15,9 @@ BYTE encrypth_blue_color(float energy, BYTE red, BYTE green, BYTE blue, BYTE enc
 
 void encrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 {
+    textData->key = 102;
+    srand(textData->key);
+
     DWORD bitSeqLength = textData->textLength * 8;
 
     // CHAR sequence to BIT sequence
@@ -25,7 +28,7 @@ void encrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
     // Converting a one-dimensional array to two-dimensional 
     // one for easy rewriting of colors (mdaaaaa ;)
 
-    UINT pixelsPerLine = imageData->bmBytePerLine / 3;
+    DWORD pixelsPerLine = imageData->bmBytePerLine / 3;
     RGBQUAD **pixels = (RGBQUAD **) malloc (imageData->bmInfo.biHeight * sizeof(RGBQUAD *));
     for(UINT i = 0; i < imageData->bmInfo.biHeight; i++)
     {
@@ -46,29 +49,22 @@ void encrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 
     // Encryption
 
-    UINT step = textData->chunk + 1;
-    DWORD row = step;
-    DWORD col = step;
+    DWORD border = textData->chunk + 1;
+    DWORD row;
+    DWORD col;
 
     for(DWORD bitID = 0; bitID < bitSeqLength; bitID++)
     {
+        row = get_num_in_range(&border, &imageData->bmInfo.biHeight);
+        col = get_num_in_range(&border, &pixelsPerLine);
+
         pixels[row][col].rgbBlue = encrypth_blue_color(\
-            imageData->energy, \
+            textData->energy, \
             pixels[row][col].rgbRed, \
             pixels[row][col].rgbGreen, \
             pixels[row][col].rgbBlue, \
             bitSeq[bitID]
         );
-        
-        if((col + step) < (imageData->bmBytePerLine - step))
-        {
-            col += step;
-        }
-        else
-        {
-            col = step;
-            row += step;
-        }
     }
 
     // Two-dimensional array to one-dimensional array
@@ -97,12 +93,14 @@ void encrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 
 void decrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 {
+    srand(textData->key);
+
     DWORD bitSeqLength = textData->textLength * 8;
     BYTE *bitSeq = (BYTE *) malloc (bitSeqLength * sizeof(BYTE));
 
     // Two-dimesional array for pixels
 
-    UINT pixelsPerLine = imageData->bmBytePerLine / 3;
+    DWORD pixelsPerLine = imageData->bmBytePerLine / 3;
 
     RGBQUAD **pixels = (RGBQUAD **) malloc (imageData->bmInfo.biHeight * sizeof(RGBQUAD *));
     for(UINT i = 0; i < imageData->bmInfo.biHeight; i++)
@@ -124,15 +122,18 @@ void decrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
 
     // Decryption
 
-    UINT step = textData->chunk + 1;
-    DWORD row = step;
-    DWORD col = step;
+    DWORD border = textData->chunk + 1;
+    DWORD row;
+    DWORD col;
     RGBQUAD currPixel;
     double estimatedBrightness = 0;
     double bluePixelsSum = 0;
 
     for(DWORD bitID = 0; bitID < bitSeqLength; bitID++)
     {
+        row = get_num_in_range(&border, &imageData->bmInfo.biHeight);
+        col = get_num_in_range(&border, &pixelsPerLine);
+
         currPixel = pixels[row][col];
 
         for(UINT i = 1; i <= textData->chunk; i++)
@@ -156,18 +157,6 @@ void decrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
         {
             bitSeq[bitID] = 0;
         }
-
-        // Next pixel
-        
-        if((col + step) < (imageData->bmBytePerLine - step))
-        {
-            col += step;
-        }
-        else
-        {
-            col = step;
-            row += step;
-        }
     }
 
     // BIT sequence to CHAR sequence
@@ -182,4 +171,9 @@ void decrypt_using_KJB(BITMAPDATA *imageData, TEXTDATA *textData)
         free(pixels[i]);
     }
     free(pixels);
+}
+
+DWORD get_num_in_range(DWORD *a, DWORD *b)
+{
+    return *a + rand()%(*b - (*a * 2) + 1);
 }
